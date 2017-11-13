@@ -80,7 +80,7 @@ paths:
           description: OK
         '405':
           description: Invalid input
-    post:
+    put:
       tags:
         - user
       summary: Add id for user
@@ -197,7 +197,7 @@ paths:
           description: OK
         '405':
           description: Invalid input
-    post:
+    put:
       tags:
         - task
       summary: add task id to this task
