@@ -29,7 +29,6 @@
           "user"
         ],
         "summary": "Add a new user",
-        "description": "",
         "operationId": "addUser",
         "consumes": [
           "application/json"
@@ -40,8 +39,8 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
-            "description": "User object that needs to be added to the",
+            "name": "user",
+            "description": "User object that needs to be added",
             "required": true,
             "schema": {
               "$ref": "#/definitions/user"
@@ -50,10 +49,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "user Successfully added. return userId",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           },
           "405": {
-            "description": "Invalid input"
+            "description": "Invalid input for user"
           }
         }
       },
@@ -61,8 +64,8 @@
         "tags": [
           "user"
         ],
-        "summary": "get a user",
-        "description": "",
+        "summary": "get all users",
+        "description": "Find users",
         "operationId": "getUser",
         "consumes": [
           "application/json"
@@ -70,23 +73,21 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User object that needs to be found",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/user"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "if users found, return list of users",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
+          },
+          "404": {
+            "description": "user not found"
           },
           "405": {
-            "description": "Invalid input"
+            "description": "Invalid input for user"
           }
         }
       }
@@ -96,9 +97,9 @@
         "tags": [
           "user"
         ],
-        "summary": "get user by user id",
-        "description": "returns a user by id",
-        "operationId": "getUserById",
+        "summary": "get user id",
+        "description": "find a userid",
+        "operationId": "getUserId",
         "produces": [
           "application/json"
         ],
@@ -113,10 +114,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Success! Found user. ",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
           },
-          "405": {
-            "description": "Invalid input"
+          "404": {
+            "description": "userid not found"
           }
         }
       },
@@ -141,8 +145,8 @@
           },
           {
             "in": "body",
-            "name": "body",
-            "description": "",
+            "name": "user",
+            "description": "user object",
             "required": true,
             "schema": {
               "$ref": "#definitions/user"
@@ -151,10 +155,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "userid successfully added to this user."
+          },
+          "404": {
+            "description": "userId not found"
           },
           "405": {
-            "description": "Invalid input"
+            "description": "Invalid input."
           }
         }
       },
@@ -162,8 +169,7 @@
         "tags": [
           "user"
         ],
-        "summary": "Delete user  by ID",
-        "description": "",
+        "summary": "Delete this user",
         "operationId": "deleteUser",
         "produces": [
           "application/json"
@@ -179,8 +185,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied"
+          "200": {
+            "description": "Successfully deleted"
           },
           "404": {
             "description": "Id not found"
@@ -193,9 +199,8 @@
         "tags": [
           "task"
         ],
-        "summary": "get task for this user",
-        "description": "",
-        "operationId": "getTaskForUser",
+        "summary": "request only the tasks for this user",
+        "operationId": "getUserTasks",
         "produces": [
           "application/json"
         ],
@@ -210,10 +215,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User tasks found. Returning list of tasks.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/task"
+              }
+            }
           },
-          "405": {
-            "description": "Invalid input"
+          "404": {
+            "description": "userId not found"
           }
         }
       },
@@ -222,7 +233,6 @@
           "task"
         ],
         "summary": "Add new task for user",
-        "description": "",
         "operationId": "addTaskToUser",
         "produces": [
           "application/json"
@@ -238,17 +248,24 @@
           },
           {
             "in": "body",
-            "name": "body",
-            "description": "",
+            "name": "task",
+            "description": "task object",
             "required": true,
             "schema": {
-              "$ref": "#definitions/user"
+              "$ref": "#definitions/task"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Success. Task added to user. Returning task Id.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "404": {
+            "description": "not found"
           },
           "405": {
             "description": "Invalid input"
@@ -261,9 +278,8 @@
         "tags": [
           "task"
         ],
-        "summary": "get task Id for task by using user id",
-        "description": "returns a task id by using id of user",
-        "operationId": "getTaskIdByUserId",
+        "summary": "request the task for this taskID that belongs to given user",
+        "operationId": "getTaskIdforTask",
         "produces": [
           "application/json"
         ],
@@ -285,10 +301,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Success! TaskId found. Returning task for this taskID.",
+            "schema": {
+              "$ref": "#definitions/task"
+            }
+          },
+          "404": {
+            "description": "userId or TaskId not found"
           },
           "405": {
-            "description": "Invalid input"
+            "description": "Invalid input for ID"
           }
         }
       },
@@ -297,7 +319,6 @@
           "task"
         ],
         "summary": "add task id to this task",
-        "description": "",
         "operationId": "addTaskId",
         "produces": [
           "application/json"
@@ -316,11 +337,22 @@
             "required": true,
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "task",
+            "in": "body",
+            "description": "task object",
+            "schema": {
+              "$ref": "#definitions/task"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Success! Id added for this task belonging to this user."
+          },
+          "404": {
+            "description": "not found."
           },
           "405": {
             "description": "Invalid input"
@@ -331,9 +363,9 @@
         "tags": [
           "task"
         ],
-        "summary": "Delete task Id",
+        "summary": "Delete task",
         "description": "",
-        "operationId": "deleteTaskById",
+        "operationId": "deleteTask",
         "produces": [
           "application/json"
         ],
@@ -356,11 +388,14 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied"
+          "200": {
+            "description": "Task has been successfully deleted."
           },
           "404": {
             "description": "Id not found"
+          },
+          "405": {
+            "description": "invalid input."
           }
         }
       }
@@ -374,13 +409,17 @@
           "type": "integer",
           "format": "int64"
         },
-        "name": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
           "type": "string"
         },
         "tasks": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/task"
+            "type": "integer",
+            "format": "int64"
           }
         }
       }
@@ -392,11 +431,29 @@
           "type": "integer",
           "format": "int64"
         },
-        "description": {
+        "title": {
           "type": "string"
         },
+        "dueDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completionDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "New",
+            "In Progress",
+            "Blocked",
+            "Completed"
+          ]
+        },
         "userid": {
-          "type": "integer"
+          "type": "integer",
+          "format": "int64"
         }
       }
     }
